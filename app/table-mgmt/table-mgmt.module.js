@@ -31,6 +31,20 @@ angular.module('app.table-mgmt', ['app.offer-mgmt', 'app.sales-mgmt', 'app.main'
         }
     });
 
+    $stateProvider.state('tableMgmt.view', {
+        url: '/tables-view',
+        templateUrl: 'table-mgmt/tables-view/tables-view.html',
+        controller: 'TablesViewCntl',
+        controllerAs: 'TVC',
+        resolve: {
+            paginatedTableList: ['tables', function (tables) {
+                return tables.getPaginatedTables(1, 4).then(function(paginatedTables) {
+                    return paginatedTables;
+                });
+            }]
+        }
+    });
+
     $stateProvider.state('tableMgmt.details', {
         url: '/table-details/:tableId',
         templateUrl: 'table-mgmt/table-details/table-details.html',

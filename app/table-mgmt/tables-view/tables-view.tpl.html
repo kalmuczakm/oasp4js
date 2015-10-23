@@ -1,10 +1,50 @@
 <!DOCTYPE html>
 <html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
 <body>
+<div class="row">
+    <div class="col-xs-12 text-center">
+        <!-- process:include table-mgmt/table-search/table-search-header.html --><!-- /process -->
+    </div>
 
+</div>
+
+        <div class="row">
+
+            <div class="col-sm-6 col-md-3" ng-repeat="table in gridOptions.data">
+                <div class="panel panel-primary table-shadow">
+                    <div class="panel-heading"><strong>Table {{table.number}}</strong></div>
+                    <div class="list-group text-center">
+                        <strong>
+                            <div class="list-group-item list-group-item-success" ng-show="table.state === 'FREE'">{{table.state}}</div>
+                            <div class="list-group-item list-group-item-warning" ng-show="table.state === 'RESERVED'">{{table.state}}</div>
+                            <div class="list-group-item list-group-item-danger" ng-show="table.state === 'OCCUPIED'">{{table.state}}</div>
+                        </strong>
+                    </div>
+                    <img src="table-mgmt/tables-view/img/hamburger.png" class="img-responsive" alt="Table {{table.number}}">
+                        <div class="btn-group btn-group-justified" role="group" aria-label="">
+                            <a type="button" class="btn btn-warning" ng-show="table.state === 'FREE'">{{'TABLE_MGMT.RESERVE' | translate}}</a>
+                            <a type="button" class="btn btn-danger" ng-show="table.state !== 'OCCUPIED'">{{'TABLE_MGMT.OCCUPY' | translate}}</a>
+                        </div>
+                        <div class="btn-group btn-group-justified" role="group" aria-label="">
+                            <a type="button" class="btn btn-success" ng-show="table.state !== 'FREE'">{{'TABLE_MGMT.RELEASE' | translate}}</a>
+                        </div>
+                        <!--<div class="btn-group btn-group-justified" role="group" aria-label="">
+                            <a type="button" class="btn btn-primary" ng-show="table.state === 'COS'">{{'TABLE_MGMT.ORDER' | translate}}</a>
+                        </div>-->
+                    <div class="panel-footer">
+                        <span ng-show="table.state === 'OCCUPIED'">Willy Waiter</span>
+                        <a type="button" class="btn btn-default btn-xs" ng-show="table.state != 'OCCUPIED'">ASSIGN ME</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="center-block">
+                    <pagination total-items="totalItems" items-per-page="numPerPage" ng-model="currentPage" num-pages="numPages"
+                    class="pagination-sm" boundary-links="true" rotate="false" max-size="maxSize"></pagination>
+                </div>
+            </div>
+        </div>
 </body>
 </html>

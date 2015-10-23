@@ -18,6 +18,7 @@
         "OCCUPY": "Occupy",
         "FREE": "Free",
         "ADD": "+Add",
-        "REMOVE": "Remove"
+        "REMOVE": "Remove",
+        "RELEASE": "Release"
     }
 }

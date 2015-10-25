@@ -5,35 +5,33 @@
     <div class="col-xs-12 text-center">
         <!-- process:include table-mgmt/table-search/table-search-header.html --><!-- /process -->
     </div>
-
 </div>
-
         <div class="row">
-
             <div class="col-sm-6 col-md-3" ng-repeat="table in gridOptions.data">
-                <div class="panel panel-primary table-shadow">
-                    <div class="panel-heading"><strong>Table {{table.number}}</strong></div>
+                <div class="panel panel-primary table-shadow text-uppercase">
+                    <div class="panel-heading">Table {{table.number}}</div>
                     <div class="list-group text-center">
                         <strong>
-                            <div class="list-group-item list-group-item-success" ng-show="table.state === 'FREE'">{{table.state}}</div>
-                            <div class="list-group-item list-group-item-warning" ng-show="table.state === 'RESERVED'">{{table.state}}</div>
-                            <div class="list-group-item list-group-item-danger" ng-show="table.state === 'OCCUPIED'">{{table.state}}</div>
+                            <div class="table-status table-status-free" ng-show="table.state === 'FREE'">{{table.state}}</div>
+                            <div class="table-status table-status-reserved" ng-show="table.state === 'RESERVED'">{{table.state}}</div>
+                            <div class="table-status table-status-occupied" ng-show="table.state === 'OCCUPIED'">{{table.state}}</div>
                         </strong>
                     </div>
                     <img src="table-mgmt/tables-view/img/hamburger.png" class="img-responsive" alt="Table {{table.number}}">
                         <div class="btn-group btn-group-justified" role="group" aria-label="">
-                            <a type="button" class="btn btn-warning" ng-show="table.state === 'FREE'">{{'TABLE_MGMT.RESERVE' | translate}}</a>
-                            <a type="button" class="btn btn-danger" ng-show="table.state !== 'OCCUPIED'">{{'TABLE_MGMT.OCCUPY' | translate}}</a>
+                            <a type="button" class="btn btn-warning table-btn" ng-click="reserve(table)" ng-show="table.state === 'FREE'">{{'TABLE_MGMT.RESERVE' | translate}}</a>
+                            <a type="button" class="btn btn-success table-btn" ng-click="release(table)" ng-show="table.state === 'RESERVED'">{{'TABLE_MGMT.RELEASE' | translate}}</a>
+                            <a type="button" class="btn btn-danger table-btn" ng-click="occupy(table)" ng-show="table.state !== 'OCCUPIED'">{{'TABLE_MGMT.OCCUPY' | translate}}</a>
                         </div>
                         <div class="btn-group btn-group-justified" role="group" aria-label="">
-                            <a type="button" class="btn btn-success" ng-show="table.state !== 'FREE'">{{'TABLE_MGMT.RELEASE' | translate}}</a>
+                            <a type="button" class="btn btn-success table-btn" ng-click="release(table)" ng-show="table.state === 'OCCUPIED'">{{'TABLE_MGMT.RELEASE' | translate}}</a>
                         </div>
-                        <!--<div class="btn-group btn-group-justified" role="group" aria-label="">
-                            <a type="button" class="btn btn-primary" ng-show="table.state === 'COS'">{{'TABLE_MGMT.ORDER' | translate}}</a>
-                        </div>-->
-                    <div class="panel-footer">
+                        <div class="btn-group btn-group-justified" role="group" aria-label="">
+                            <a type="button" class="btn btn-primary table-btn" ng-click="openEditDialog(table)" ng-class="table.state !== 'OCCUPIED' ? 'disabled' : ''">{{'TABLE_MGMT.ORDER' | translate}}</a>
+                        </div>
+                    <div class="panel-footer text-capitalize">
                         <span ng-show="table.state === 'OCCUPIED'">Willy Waiter</span>
-                        <a type="button" class="btn btn-default btn-xs" ng-show="table.state != 'OCCUPIED'">ASSIGN ME</a>
+                        <a type="button" class="btn btn-default btn-xs" ng-show="table.state != 'OCCUPIED'"><h8>ASSIGN ME</h8></a>
                     </div>
                 </div>
             </div>

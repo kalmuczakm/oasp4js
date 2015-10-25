@@ -5,8 +5,8 @@ angular.module('app.table-mgmt')
             return $scope.selectedItems && $scope.selectedItems.length ? $scope.selectedItems[0] : undefined;
         };
 
-        $scope.openEditDialog = function (tableRow) {
-            $state.go('tableMgmt.details', {tableId: tableRow.id});
+        $scope.openEditDialog = function (table) {
+            $state.go('tableMgmt.details', {tableId: table.id});
         };
 
         $scope.selectedItems = [];
@@ -31,6 +31,18 @@ angular.module('app.table-mgmt')
         $scope.$watch('currentPage', function () {
             $scope.reloadTables();
         });
+
+        $scope.reserve = function (table) {
+            tables.reserve(table);
+        };
+
+        $scope.release = function (table) {
+              tables.free(table);
+        };
+
+        $scope.occupy = function (table) {
+            tables.occupy(table);
+        };
 
         $scope.buttonDefs = [
             {

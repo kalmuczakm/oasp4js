@@ -83,7 +83,7 @@ angular.module('app.table-mgmt').controller('TableDetailsCntl',
         };
 
         tdcSelf.goToSearchView = function () {
-            $state.go('tableMgmt.search');
+            $state.go('tableMgmt.view');
         };
 
         tdcSelf.addPosition = function (offer) {

@@ -1,31 +1,27 @@
-@table-free: rgba(68, 157, 68, 0.5);
-@table-reserved: rgba(236, 151, 31, 0.5);
-@table-occupied: rgba(217, 83, 79, 0.5);
+@table-free: rgba(68, 157, 68, 0.8);
+@table-reserved: rgba(236, 151, 31, 0.8);
+@table-occupied: rgba(217, 83, 79, 0.8);
 
 .table-image-container {
     position: relative;
     z-index: 1;
-    max-height: 50%;
     overflow: hidden;
+    height: 10rem;
 }
 
 .table-image-container img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-    margin-top: -25%;
+    vertical-align: middle;
 }
 
 .table-image-text {
     position: absolute;
     z-index: 2;
     top: 35%;
-    bottom: 0;
     left: 0;
     right: 0;
-    height: 30%;
     display: block;
     color: #FFFFFF;
+    font-size: 2rem;
 }
 
 .table-shadow {
@@ -38,7 +34,7 @@
 }
 
 .tables-btn-group {
-    margin-left: 10px;
+    margin: 0.5rem 0.5rem;
 }
 
 .table-status-free {

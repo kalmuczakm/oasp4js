@@ -3,15 +3,10 @@
 <body>
 <div class="row">
     <div class="col-xs-12 text-center">
-        <!-- process:include table-mgmt/table-search/table-search-header.html --><!-- /process -->
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-12 text-center">
             <div class="btn-group tables-btn-group" role="group" aria-label="">
-                <button type="button" class="btn" ng-class="tableFilter.free ? 'btn-success' : 'btn-standard'" ng-click="toggleFilter('free')">Free</button>
-                <button type="button" class="btn" ng-class="tableFilter.reserved ? 'btn-warning' : 'btn-standard'" ng-click="toggleFilter('reserved')">Reserved</button>
-                <button type="button" class="btn" ng-class="tableFilter.occupied ? 'btn-danger' : 'btn-standard'" ng-click="toggleFilter('occupied')">Occupied</button>
+                <button type="button" class="btn" ng-class="tableStatus.free ? 'btn-success' : 'btn-standard'" ng-click="toggleFilter('free')">Free</button>
+                <button type="button" class="btn" ng-class="tableStatus.reserved ? 'btn-warning' : 'btn-standard'" ng-click="toggleFilter('reserved')">Reserved</button>
+                <button type="button" class="btn" ng-class="tableStatus.occupied ? 'btn-danger' : 'btn-standard'" ng-click="toggleFilter('occupied')">Occupied</button>
                 <button type="button" class="btn btn-primary" ng-click="toggleFilter('all')">All</button>
             </div>
             <div class="btn-group tables-btn-group" role="group" aria-label="">
@@ -28,7 +23,7 @@
     </div>
 </div>
         <div class="row">
-            <div class="col-sm-6 col-md-3" ng-repeat="table in gridOptions.data | filter:showTable">
+            <div class="col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" ng-repeat="table in gridOptions.data | filter:statusFilter">
                 <div class="panel panel-primary table-shadow text-uppercase">
                     <div class="panel-heading">Table {{table.number}}</div>
                     <div class="table-image-container text-center">
@@ -37,6 +32,7 @@
                             <div class="table-status-reserved table-image-text" ng-show="table.state === 'RESERVED'"><strong>{{table.state}}</strong></div>
                             <div class="table-status-occupied table-image-text" ng-show="table.state === 'OCCUPIED'"><strong>{{table.state}}</strong></div>
                     </div>
+                    <div>
                         <div class="btn-group btn-group-justified" role="group" aria-label="">
                             <a type="button" class="btn btn-warning table-btn" ng-click="reserve(table)" ng-show="table.state === 'FREE'">{{'TABLE_MGMT.RESERVE' | translate}}</a>
                             <a type="button" class="btn btn-success table-btn" ng-click="release(table)" ng-show="table.state === 'RESERVED'">{{'TABLE_MGMT.RELEASE' | translate}}</a>
@@ -48,6 +44,8 @@
                         <div class="btn-group btn-group-justified" role="group" aria-label="">
                             <a type="button" class="btn btn-primary table-btn" ng-click="openEditDialog(table)" ng-class="table.state !== 'OCCUPIED' ? 'disabled' : ''">{{'TABLE_MGMT.ORDER' | translate}}</a>
                         </div>
+                    </div>
+
                     <div class="panel-footer text-capitalize">
                         <span ng-show="table.state === 'OCCUPIED'">Willy Waiter</span>
                         <a type="button" class="btn btn-default btn-xs" ng-show="table.state != 'OCCUPIED'"><h8>ASSIGN ME</h8></a>
@@ -55,13 +53,11 @@
                 </div>
             </div>
         </div>
-        <!--<div class="row">
-            <div class="col-md-12">
-                <div class="center-block">
+        <div class="row" ng-show="totalItems > numPerPage">
+            <div class="col-xs-12 text-center">
                     <pagination total-items="totalItems" items-per-page="numPerPage" ng-model="currentPage" num-pages="numPages"
-                    class="pagination-sm" boundary-links="true" rotate="false" max-size="maxSize"></pagination>
-                </div>
+                    class="pagination-md" boundary-links="false" rotate="false" max-size="maxSize" ></pagination>
             </div>
-        </div>-->
+        </div>
 </body>
 </html>

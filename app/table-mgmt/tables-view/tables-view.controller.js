@@ -24,11 +24,30 @@ angular.module('app.table-mgmt')
                 return paginatedTables;
             }).then(function (res) {
                 paginatedTableList = res;
+
+                //paginatedTableList.result = filterTables(res.result);
                 $scope.gridOptions.data = paginatedTableList.result;
             });
         };
 
-        $scope.tableFilter = {
+        /*function filterTables(tables) {
+            var filteredTables = [];
+            angular.forEach(tables, function(table) {
+                $scope.statusFilter(table) ? filteredTables.push(table) : '';
+            });
+            return filteredTables;
+        }*/
+
+        function multiplyPaginatedTableBy (table, times) {
+            var multipliedTable = table;
+            for(var i=1; i<times; i++) {
+                multipliedTable.result = table.result.concat(angular.copy(table.result));
+            }
+            multipliedTable.pagination.total *= times;
+            return multipliedTable;
+        }
+
+        $scope.tableStatus = {
             free: true,
             reserved: true,
             occupied: true
@@ -36,16 +55,17 @@ angular.module('app.table-mgmt')
 
         $scope.toggleFilter = function (kind) {
             if(kind === 'all') {
-                angular.forEach($scope.tableFilter, function(bool, attr) {
-                    $scope.tableFilter[attr] = true;
+                angular.forEach($scope.tableStatus, function(bool, attr) {
+                    $scope.tableStatus[attr] = true;
                 })
             } else {
-                $scope.tableFilter[kind] = !$scope.tableFilter[kind];
+                $scope.tableStatus[kind] = !$scope.tableStatus[kind];
             }
+            $scope.reloadTables();
         };
 
-        $scope.showTable = function (table) {
-            return $scope.tableFilter[table.state.toLowerCase()] === true;
+        $scope.statusFilter = function (table) {
+            return $scope.tableStatus[table.state.toLowerCase()] === true;
         };
 
         $scope.$watch('currentPage', function () {
@@ -53,15 +73,21 @@ angular.module('app.table-mgmt')
         });
 
         $scope.reserve = function (table) {
-            tables.reserve(table);
+            globalSpinner.decorateCallOfFunctionReturningPromise(function () {
+                return tables.reserve(table).then($scope.reloadTables);
+            })
         };
 
         $scope.release = function (table) {
-              tables.free(table);
+            globalSpinner.decorateCallOfFunctionReturningPromise(function () {
+                return tables.free(table).then($scope.reloadTables);
+            });
         };
 
         $scope.occupy = function (table) {
-            tables.occupy(table);
+            globalSpinner.decorateCallOfFunctionReturningPromise(function () {
+                return tables.occupy(table).then($scope.reloadTables);
+            });
         };
 
         $scope.buttonDefs = [

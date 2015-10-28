@@ -6,18 +6,37 @@
         <!-- process:include table-mgmt/table-search/table-search-header.html --><!-- /process -->
     </div>
 </div>
+<div class="row">
+    <div class="col-xs-12 text-center">
+            <div class="btn-group tables-btn-group" role="group" aria-label="">
+                <button type="button" class="btn" ng-class="tableFilter.free ? 'btn-success' : 'btn-standard'" ng-click="toggleFilter('free')">Free</button>
+                <button type="button" class="btn" ng-class="tableFilter.reserved ? 'btn-warning' : 'btn-standard'" ng-click="toggleFilter('reserved')">Reserved</button>
+                <button type="button" class="btn" ng-class="tableFilter.occupied ? 'btn-danger' : 'btn-standard'" ng-click="toggleFilter('occupied')">Occupied</button>
+                <button type="button" class="btn btn-primary" ng-click="toggleFilter('all')">All</button>
+            </div>
+            <div class="btn-group tables-btn-group" role="group" aria-label="">
+                <button type="button" class="btn btn-default" ng-click="">My Tables</button>
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    All <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="#">Jeremy Angel</a></li>
+                    <li><a href="#">Willy Waiter</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
         <div class="row">
-            <div class="col-sm-6 col-md-3" ng-repeat="table in gridOptions.data">
+            <div class="col-sm-6 col-md-3" ng-repeat="table in gridOptions.data | filter:showTable">
                 <div class="panel panel-primary table-shadow text-uppercase">
                     <div class="panel-heading">Table {{table.number}}</div>
-                    <div class="list-group text-center">
-                        <strong>
-                            <div class="table-status table-status-free" ng-show="table.state === 'FREE'">{{table.state}}</div>
-                            <div class="table-status table-status-reserved" ng-show="table.state === 'RESERVED'">{{table.state}}</div>
-                            <div class="table-status table-status-occupied" ng-show="table.state === 'OCCUPIED'">{{table.state}}</div>
-                        </strong>
+                    <div class="table-image-container text-center">
+                            <img src="table-mgmt/tables-view/img/hamburger.png" class="img-responsive" alt="">
+                            <div class="table-status-free table-image-text" ng-show="table.state === 'FREE'"><strong>{{table.state}}</strong></div>
+                            <div class="table-status-reserved table-image-text" ng-show="table.state === 'RESERVED'"><strong>{{table.state}}</strong></div>
+                            <div class="table-status-occupied table-image-text" ng-show="table.state === 'OCCUPIED'"><strong>{{table.state}}</strong></div>
                     </div>
-                    <img src="table-mgmt/tables-view/img/hamburger.png" class="img-responsive" alt="Table {{table.number}}">
                         <div class="btn-group btn-group-justified" role="group" aria-label="">
                             <a type="button" class="btn btn-warning table-btn" ng-click="reserve(table)" ng-show="table.state === 'FREE'">{{'TABLE_MGMT.RESERVE' | translate}}</a>
                             <a type="button" class="btn btn-success table-btn" ng-click="release(table)" ng-show="table.state === 'RESERVED'">{{'TABLE_MGMT.RELEASE' | translate}}</a>
@@ -36,13 +55,13 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <!--<div class="row">
             <div class="col-md-12">
                 <div class="center-block">
                     <pagination total-items="totalItems" items-per-page="numPerPage" ng-model="currentPage" num-pages="numPages"
                     class="pagination-sm" boundary-links="true" rotate="false" max-size="maxSize"></pagination>
                 </div>
             </div>
-        </div>
+        </div>-->
 </body>
 </html>

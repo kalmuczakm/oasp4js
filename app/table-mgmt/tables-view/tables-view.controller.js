@@ -28,6 +28,26 @@ angular.module('app.table-mgmt')
             });
         };
 
+        $scope.tableFilter = {
+            free: true,
+            reserved: true,
+            occupied: true
+        };
+
+        $scope.toggleFilter = function (kind) {
+            if(kind === 'all') {
+                angular.forEach($scope.tableFilter, function(bool, attr) {
+                    $scope.tableFilter[attr] = true;
+                })
+            } else {
+                $scope.tableFilter[kind] = !$scope.tableFilter[kind];
+            }
+        };
+
+        $scope.showTable = function (table) {
+            return $scope.tableFilter[table.state.toLowerCase()] === true;
+        };
+
         $scope.$watch('currentPage', function () {
             $scope.reloadTables();
         });

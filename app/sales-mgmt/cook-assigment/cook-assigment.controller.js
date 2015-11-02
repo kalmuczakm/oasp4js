@@ -1,5 +1,5 @@
 angular.module('app.sales-mgmt')
-    .controller('CookAssigmentCntl', function ($scope, currentPositions, positions, globalSpinner, positionStateNotification, $log) {
+    .controller('CookAssigmentCntl', function ($scope, currentPositions, positions, globalSpinner, positionStateNotification) {
         'use strict';
 
         positionStateNotification.connect().then(function () {
@@ -13,7 +13,7 @@ angular.module('app.sales-mgmt')
             enableSelectAll: true,
             selectionRowHeaderWidth: 35,
             rowHeight: 35,
-            multiSelect: true,
+            multiSelect: false,
             enableFullRowSelection: true,
             enableColumnMenus: false
         };
@@ -34,19 +34,36 @@ angular.module('app.sales-mgmt')
             //set gridApi on scope
             $scope.gridApi = gridApi;
             gridApi.selection.on.rowSelectionChanged($scope, function (row) {
-                var msg = 'row selected ' + row.isSelected;
-                $log.log(msg);
+                if(row.isSelected) {
+                    $scope.positionsAvailableSelected.push(row.entity);
+                } else {
+                    $scope.positionsAvailableSelected.splice($scope.positionsAvailableSelected.indexOf(row.entity), 1)
+                }
             });
-
-            gridApi.selection.on.rowSelectionChangedBatch($scope, function (rows) {
+            /*gridApi.selection.on.rowSelectionChangedBatch($scope, function (rows) {
                 var msg = 'rows changed ' + rows.length;
                 $log.log(msg);
-            });
+            });*/
         };
 
-        /*$scope.positionsAvailableSelected = [];
-        $scope.positionsAssignedSelected = [];
+        $scope.gridOptionsAssigned.onRegisterApi = function(gridApi) {
+            //set gridApi on scope
+            $scope.gridApi = gridApi;
+            gridApi.selection.on.rowSelectionChanged($scope, function (row) {
+                if(row.isSelected) {
+                    $scope.positionsAssignedSelected.push(row.entity);
+                } else {
+                    $scope.positionsAssignedSelected.splice($scope.positionsAssignedSelected.indexOf(row.entity), 1)
+                }
+            });
+            /*gridApi.selection.on.rowSelectionChangedBatch($scope, function (rows) {
+                var msg = 'rows changed ' + rows.length;
+                $log.log(msg);
+            });*/
+        };
 
+        $scope.positionsAvailableSelected = [];
+        $scope.positionsAssignedSelected = [];
 
         $scope.availablePositionSelected = function () {
             return ($scope.positionsAvailableSelected && $scope.positionsAvailableSelected.length > 0) ? true : false;
@@ -63,6 +80,7 @@ angular.module('app.sales-mgmt')
                 });
             }
         };
+
         $scope.buttonDefs = [
             {
                 label: 'SALES_MGMT.DONE',
@@ -90,5 +108,5 @@ angular.module('app.sales-mgmt')
                     return $scope.assignedPositionSelected();
                 }
             }
-        ];*/
+        ];
     });
